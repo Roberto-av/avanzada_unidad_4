@@ -26,6 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'create') {
 	$productsController->addProduct($name, $slug, $description, $features);
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'delete') {
+	$id = $_POST['id'];
+
+	$productsController->deleteProduct($id);
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -194,9 +200,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'create') {
 											</p>
 											<a href="product.php?slug=<?= $product->slug ?>" class="m-1 btn btn-primary">Go somewhere</a>
 
-											<a href="product.html" class="m-1 btn btn-danger">
+											<button onclick="eliminarProducto(<?= $product->id ?>)" class="m-1 btn btn-danger">
 												Eliminar
-											</a>
+											</button>
 
 											<button onclick='cargarProducto(this)' data-product='<?= json_encode($product)  ?>' data-bs-toggle="modal" data-bs-target="#editModal" type="button" class="btn btn-warning">
 												Editar
@@ -272,7 +278,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'create') {
 					<form method="POST" action="">
 						<input type="hidden" name="action" value="update">
 						<div class="mb-3">
-							<input type="hidden" id="up_id" name="id">						
+							<input type="hidden" id="up_id" name="id">
 						</div>
 						<div class="mb-3">
 							<label for="name" class="form-label">Nombre</label>
@@ -301,7 +307,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'create') {
 		</div>
 	</div>
 
+	<form method="POST" id="delete-form" action="">
+		<input type="hidden" name="action" value="delete">
+		<input type="hidden" id="delete_id" name="id">
+	</form>
+
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 	<script>
 		function cargarProducto(prod) {
 			let producto = JSON.parse(prod.dataset.product);
@@ -310,6 +323,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'create') {
 			document.getElementById("up-slug").value = producto.slug
 			document.getElementById("up-description").value = producto.description
 			document.getElementById("up-features").value = producto.features
+		}
+
+		function eliminarProducto(id) {
+			Swal.fire({
+				title: "Are you sure?",
+				text: "You won't be able to revert this!",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#3085d6",
+				cancelButtonColor: "#d33",
+				confirmButtonText: "Yes, delete it!"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire({
+						title: "Deleted!",
+						text: "Your file has been deleted.",
+						icon: "success"
+					});
+					document.getElementById("delete_id").value = id;
+					document.getElementById("delete-form").submit();
+				}
+			});
+			console.log(id);
 		}
 	</script>
 </body>
