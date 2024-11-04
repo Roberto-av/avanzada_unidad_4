@@ -1,8 +1,13 @@
 <?php
 
 include_once "app/ProductsController.php";
+include_once "app/BrandController.php";
 
 $productsController = new ProductsController();
+
+$brandController = new BrandController();
+
+$marcas = $brandController->get();
 
 $productos = $productsController->get();
 
@@ -254,6 +259,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'delete') {
 						<div class="mb-3">
 							<label for="features" class="form-label">features</label>
 							<input type="text" class="form-control" id="features" name="features" aria-describedby="features" required>
+						</div>
+						<div class="mb-3">
+							<label for="brand" class="form-label">Marcas</label>
+							<select id="brand" class="form-select">
+								<?php if (isset($marcas) && count($marcas)): ?>
+									<?php foreach ($marcas as $marca): ?>
+										<option value="<?= $marca->id ?>"><?= $marca->name ?></option>
+									<?php endforeach ?>
+								<?php endif ?>
+							</select>
 						</div>
 						<button type="submit" class="btn btn-primary">Submit</button>
 					</form>
