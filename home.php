@@ -203,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'delete') {
 											<p class="card-text">
 												<?= $product->description ?>
 											</p>
-											<a href="product.php?slug=<?= $product->slug ?>" class="m-1 btn btn-primary">Go somewhere</a>
+											<a href="product/<?= $product->slug ?>" class="m-1 btn btn-primary">Go somewhere</a>
 
 											<button onclick="eliminarProducto(<?= $product->id ?>)" class="m-1 btn btn-danger">
 												Eliminar

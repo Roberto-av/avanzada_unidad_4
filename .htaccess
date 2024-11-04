@@ -1,0 +1,8 @@
+Options +FollowSymLinks -MultiViews -Indexes
+RewriteEngine on
+
+RewriteRule ^login/?$ index.php [L]
+RewriteRule ^home$ home.php [L]
+RewriteRule ^product/([^/]+)/?$ product.php?slug=$1 [L,QSA]
+RewriteRule ^auth/?$ app/AuthController.php [L]
+RewriteRule ^resources/?$ app/ProductController.php [L]
